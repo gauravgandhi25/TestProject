@@ -14,6 +14,4 @@ public class Constants {
 	static final String SECTION3_INPUT = SECTION1_OUTPUT;
 	static final String SECTION3_INPUT_REQUESTS = "new requests.txt";
 	static final String SECTION3_OUTPUT = "output_3.txt";
-	
-	
 }
