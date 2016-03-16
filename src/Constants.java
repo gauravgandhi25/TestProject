@@ -2,7 +2,7 @@
 public class Constants {
 	static int GLOBAL_MIN;
 	static int GLOBAL_MAX;
-	
+
 	static final String TOP_LEFT = "TOP_LEFT";
 	static final String TOP_RIGHT = "TOP_RIGHT";
 	static final String BOTTOM_LEFT = "BOTTOM_LEFT";
