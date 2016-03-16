@@ -19,10 +19,8 @@ public class Solution3 {
 
 	static Map<String, ArrayList<Task>> allTasks = new TreeMap<String, ArrayList<Task>>();
 	static Map<String, String[][]> timeLines = new HashMap<String, String[][]>();
-
-	
 	static ArrayList<Task> newTasks = new ArrayList<>();
-
+	
 	public static void main(String[] args) {
 
 		readFile(allTasks);
@@ -47,11 +45,11 @@ public class Solution3 {
 		ArrayList<Task> temp = new ArrayList<Task>();
 		for (Task task : newTasks) {
 			if (checkIfFeasible(task)) {
+				System.out.println(task.name + " added");
 				temp.add(task);
-			}
-			System.out.println("Processing: " + task.name);
+				
+			}			
 		}
-
 		writeToFile(temp);
 	}
 	
@@ -67,15 +65,12 @@ public class Solution3 {
 			return false; // doesn't have room
 		}
 		
-		
-		String[][] timeLine;
-
 		for (Entry<String, String[][]> entry : timeLines.entrySet()) {
-			timeLine = entry.getValue();
+			String[][] timeLine = entry.getValue();
 			for (int i = 0; i < 3; i++) {
 				if (isTaskInBetween(timeLine[i], task.startTime - Constants.GLOBAL_MIN,
 						task.endTime - Constants.GLOBAL_MIN, task.name)) {
-					return true;
+					return false;
 				}
 			}
 		}
@@ -83,7 +78,7 @@ public class Solution3 {
 		tasks = temp;
 
 		Collections.sort(tasks, new StartComparator());
-		timeLine = new String[3][Constants.GLOBAL_MAX - Constants.GLOBAL_MIN + 1];
+		String[][] timeLine = new String[3][Constants.GLOBAL_MAX - Constants.GLOBAL_MIN + 1];
 
 		for (int i = 0; i < 3; i++)
 			Arrays.fill(timeLine[i], "00");
@@ -193,23 +188,6 @@ public class Solution3 {
 		}
 	}
 
-	// This method returns list of compatible tasks, by removing incompatible
-	// tasks from list of all tasks
-	private static ArrayList<Task> getCompatibleTasks(Set<Integer> inCompatibleTaskset, ArrayList<Task> tasks) {
-
-		ArrayList<Task> temp = ((ArrayList<Task>) tasks.clone());
-		int i = 0;
-
-		for (Task task : temp) {
-			if (!inCompatibleTaskset.contains(task.id)) {
-				i++;
-			} else {
-				tasks.remove(i);
-			}
-		}
-		return tasks;
-	}
-
 	// This method reads from the file and adds all tasks to the global key
 	// value map. Key is the location
 	private static void readFile(Map<String, ArrayList<Task>> allTasks) {
@@ -293,50 +271,6 @@ public class Solution3 {
 		return inCompatible;
 	}
 
-	// This function determines is given task is running at any previously
-		
-	private static boolean isRunningAnyWhere(Task task) {
-
-		if (task.location.equalsIgnoreCase("TOP_LEFT"))
-			return false;
-
-		if (task.location.equalsIgnoreCase("TOP_RIGHT") || task.location.equalsIgnoreCase("BOTTOM_LEFT")
-				|| task.location.equalsIgnoreCase("BOTTOM_RIGHT")) {
-			String[][] timeLine = timeLines.get("TOP_LEFT");
-			for (int i = 0; i < 3; i++) {
-				if (isTaskInBetween(timeLine[i], task.startTime - Constants.GLOBAL_MIN,
-						task.endTime - Constants.GLOBAL_MIN, task.name)) {
-					return true;
-				}
-			}
-		}
-
-		if (task.location.equalsIgnoreCase("BOTTOM_LEFT") || task.location.equalsIgnoreCase("BOTTOM_RIGHT")) {
-			String[][] timeLine = timeLines.get("TOP_RIGHT");
-			for (int i = 0; i < 3; i++) {
-				if (isTaskInBetween(timeLine[i], task.startTime - Constants.GLOBAL_MIN,
-						task.endTime - Constants.GLOBAL_MIN, task.name)) {
-					return true;
-				}
-			}
-		}
-
-		if (task.location.equalsIgnoreCase("BOTTOM_RIGHT")) {
-			String[][] timeLine = timeLines.get("BOTTOM_LEFT");
-			for (int i = 0; i < 3; i++) {
-				if (isTaskInBetween(timeLine[i], task.startTime - Constants.GLOBAL_MIN,
-						task.endTime - Constants.GLOBAL_MIN, task.name)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
-
-	
-
-	// This function determines, if there is same task in between provided start
 	// This method checks of there is given task in between start and end inclusive
 	private static boolean isTaskInBetween(String[] timeLine, int start, int end, String name) {
 
@@ -345,13 +279,6 @@ public class Solution3 {
 				return true;
 		}
 		return false;
-	}
-
-	// This displays compatible tasks by removing incompatible tasks.
-	private static void displayTasks(ArrayList<Task> tasks) {
-		for (Task task : tasks) {
-			System.out.println(task.toString());
-		}
 	}
 
 	// Print the time line for one locations
@@ -370,7 +297,7 @@ public class Solution3 {
 	private static void writeToFile(ArrayList<Task> tasks) {
 
 		try {
-			BufferedWriter writer = new BufferedWriter(new FileWriter(Constants.SECTION3_OUTPUT, true));
+			BufferedWriter writer = new BufferedWriter(new FileWriter(Constants.SECTION3_OUTPUT, false));
 
 			for (Task task : tasks) {
 				writer.write(task.location + " " + task.name + " " + task.startTime + " " + task.endTime);
