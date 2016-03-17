@@ -262,13 +262,6 @@ public class Solution1 {
 		return false;
 	}
 
-	// This displays compatible tasks by removing incompatible tasks.
-	private static void displayTasks(ArrayList<Task> tasks) {
-		for (Task task : tasks) {
-			System.out.println(task.toString());
-		}
-	}
-
 	// Print the time line for one locations
 	private static void print(String[][] timeLine) {
 
@@ -295,13 +288,6 @@ public class Solution1 {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-	
-	// Print tasks from the provided list
-	private static void printTasks(ArrayList<Task> tasks) {
-		for (Task task : tasks) {
-			System.out.println(task.location + " " + task.name + " " + task.startTime + " " + task.endTime);
 		}
 	}
 
